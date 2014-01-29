@@ -28,45 +28,36 @@ phonecatServices.factory('uuid', [function($q, $rootScope) {
 
 phonecatServices.factory('backend', ['$q', '$rootScope', 'uuid', function($q, $rootScope, uuid) {
   // We return this object to anything injecting our service
-  var Service = {};
+  var Service = {}
 
-  var primus = new Primus();
+  var primus = new Primus()
 
   primus.on('reconnect', function reconnect(opts) {
-    logger.info('reconnect', 'Reconnecting', 'We are <strong>scheduling</strong> a new reconnect attempt. This is attempt <strong>'+ opts.attempt +'</strong> and will trigger a reconnect operation in <strong>'+ opts.timeout +'</strong> ms.');
-
-  });
+    logger.info('Reconnecting', 'We are scheduling a new reconnect attempt. This is attempt '+ opts.attempt +' and will trigger a reconnect operation in '+ opts.timeout +'ms.')
+  })
 
   primus.on('reconnect', function reconnect() {
-    logger.info('reconnect', 'Reconnect', 'Starting the reconnect attempt, hopefully we get a connection!');
-  });
+    logger.info('reconnect', 'Reconnect', 'Starting the reconnect attempt, hopefully we get a connection!')
+  })
 
   primus.on('online', function online() {
-    logger.info('network', 'Online', 'We have regained control over our internet connection.');
-  });
+    logger.info('We have regained control over our internet connection.')
+  })
 
   primus.on('offline', function offline() {
-    logger.info('network', 'Offline', 'We lost our internet connection.');
-  });
+    logger.info('We lost our internet connection.')
+  })
 
   primus.on('open', function open() {
-    logger.info('open', 'Open', 'The connection has been established.');
-
-  });
+    logger.info('The connection has been established.')
+  })
 
   primus.on('error', function error(err) {
-    logger.info('error', 'Error', 'An unknown error has occured <code>'+ err.message +'</code>');
-  });
+    logger.info('An unknown error has occured', err)
+  })
 
-  primus.on('data', function incoming(data) {
-    logger.info('data', 'Received data', 'string' === typeof data ? data : '<pre><code>'+ JSON.stringify(data, null, 2) +'</code></pre>');
-
-    try {
-      var wrapper = JSON.parse(data)
-    } catch(err) {
-      logger.error(err)
-      return;
-    }
+  primus.on('data', function incoming(wrapper) {
+    logger.info('Received data', JSON.stringify(wrapper))
 
     if(wrapper && wrapper.event) {
       // TODO: emit event
@@ -76,15 +67,15 @@ phonecatServices.factory('backend', ['$q', '$rootScope', 'uuid', function($q, $r
       delete callbacks[wrapper.id]
     }
 
-  });
+  })
 
   primus.on('end', function end() {
-    logger.info('end', 'End', 'The connection has ended.');
-  });
+    logger.info('The connection has ended.')
+  })
 
   primus.on('close', function end() {
-    logger.info('close', 'close', 'We\'ve lost the connection to the server.');
-  });
+    logger.info('We\'ve lost the connection to the server.')
+  })
 
   var callbacks = {}
 
@@ -96,11 +87,11 @@ phonecatServices.factory('backend', ['$q', '$rootScope', 'uuid', function($q, $r
     }
 
     if(callback) {
-      callbacks[wrapper.id] = callback;
+      callbacks[wrapper.id] = callback
     }
 
-    primus.write(JSON.stringify(wrapper));
+    primus.write(wrapper)
   }
 
-  return Service;
+  return Service
 }])
