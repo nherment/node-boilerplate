@@ -4,7 +4,6 @@
 
 var phonecatApp = angular.module('phonecatApp', [
   'ngRoute',
-
   'phonecatControllers',
   'phonecatFilters',
   'phonecatServices'
@@ -13,7 +12,15 @@ var phonecatApp = angular.module('phonecatApp', [
 phonecatApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
-      when('home', {
+      when('/signin', {
+        templateUrl: 'partials/signin.html',
+        controller: 'SignInCtrl'
+      }).
+      when('/signup', {
+        templateUrl: 'partials/signup.html',
+        controller: 'SignUpCtrl'
+      }).
+      when('/home', {
         templateUrl: 'partials/home.html',
         controller: 'HomeCtrl'
       }).

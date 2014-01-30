@@ -93,5 +93,41 @@ phonecatServices.factory('backend', ['$q', '$rootScope', 'uuid', function($q, $r
     primus.write(wrapper)
   }
 
+  var eventListeners = {}
+
+  Service.on = function(event, eventListener) {
+    if(!eventListeners.hasOwnProperty(event)) {
+      eventListeners[event] = []
+    }
+    if(eventListener) {
+      eventListeners[event].push(event)
+    }
+  }
+
+  Service.removeEventListener = function(event, eventListener) {
+    if(eventListeners.hasOwnProperty(event) && eventListeners[event].length > 0) {
+      for(var i = 0 ; i < eventListeners[event].length ; i++) {
+        if(eventListeners[event][i] === eventListener) {
+          eventListeners[event].splice(i, 1)
+        }
+      }
+    }
+  }
+
+  Service.removeAllListeners = function(event) {
+    if(event) {
+      if(eventListeners.hasOwnProperty(event)) {
+        delete eventListeners[event]
+      }
+    } else {
+      for(event in eventListeners) {
+        if(eventListeners.hasOwnProperty(event)) {
+          delete eventListeners[event]
+        }
+      }
+    }
+
+  }
+
   return Service
 }])

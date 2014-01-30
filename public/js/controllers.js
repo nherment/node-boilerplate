@@ -9,6 +9,16 @@ phonecatControllers.controller('HomeCtrl', ['$scope', 'backend',
 //    backend.send('hello')
   }]);
 
+phonecatControllers.controller('SignInCtrl', ['$scope', 'backend',
+  function($scope, backend) {
+//    backend.send('hello')
+  }]);
+
+phonecatControllers.controller('SignUpCtrl', ['$scope', 'backend',
+  function($scope, backend) {
+//    backend.send('hello')
+  }]);
+
 phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone', 'backend',
   function($scope, Phone, backend) {
     backend.send('hello')
